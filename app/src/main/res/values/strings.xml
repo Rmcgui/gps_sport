@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">android_user_registration</string>
+
+
+    <string name="back4app_server_url" translatable="false">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id" translatable="false">8oho9kCeHa421FbTOzubgNLP8iDh5kXKFZxxGMQj</string>
+    <string name="back4app_client_key" translatable="false">fDmMeaRrxYSGoVQywEOqIWGT1smpQEe4jGyvCKz3</string>
+</resources>
