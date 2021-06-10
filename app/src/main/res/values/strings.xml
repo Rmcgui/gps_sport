@@ -5,4 +5,15 @@
     <string name="back4app_server_url" translatable="false">https://parseapi.back4app.com/</string>
     <string name="back4app_app_id" translatable="false">8oho9kCeHa421FbTOzubgNLP8iDh5kXKFZxxGMQj</string>
     <string name="back4app_client_key" translatable="false">fDmMeaRrxYSGoVQywEOqIWGT1smpQEe4jGyvCKz3</string>
+    <string name="title_activity_main_login">MainActivityLogin</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
 </resources>
