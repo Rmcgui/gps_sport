@@ -3,6 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/activity_login.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/activity_signup.xml" value="0.21979166666666666" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/app_bar_main_activity_login.xml" value="0.2520833333333333" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/content_main_activity_login.xml" value="0.2520833333333333" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/fragment_slideshow.xml" value="0.2520833333333333" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/fragment_workouts.xml" value="0.26197916666666665" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/nav_header_main_activity_login.xml" value="0.2520833333333333" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/workout_task.xml" value="0.24456521739130435" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/menu/activity_main_drawer.xml" value="0.2520833333333333" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/menu/main_activity_login.xml" value="0.2625" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/GPSSport/app/src/main/res/layout/activity_logout.xml" value="0.2625" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/GPSSport/app/src/main/res/layout/activity_main_login.xml" value="0.259375" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/GPSSport/app/src/main/res/layout/app_bar_main_activity_login.xml" value="0.10326086956521739" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/GPSSport/app/src/main/res/layout/content_main_activity_login.xml" value="0.10733695652173914" />

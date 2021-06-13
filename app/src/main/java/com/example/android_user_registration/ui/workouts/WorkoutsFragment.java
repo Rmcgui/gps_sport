@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_user_registration.R;
 import com.example.android_user_registration.databinding.FragmentSlideshowBinding;
@@ -22,6 +24,8 @@ public class WorkoutsFragment extends Fragment {
 
     private WorkoutsViewModel workoutsViewModel;
     private FragmentWorkoutsBinding binding;
+    // for displaying workouts
+    RecyclerView recyclerView;
 
     public static WorkoutsFragment newInstance() {
         return new WorkoutsFragment();
@@ -32,17 +36,29 @@ public class WorkoutsFragment extends Fragment {
         workoutsViewModel =
                 new ViewModelProvider(this).get(WorkoutsViewModel.class);
 
-        binding = FragmentWorkoutsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        // create recycler view for workouts
+        final View v = inflater.inflate(R.layout.fragment_workouts, container, false);
+        recyclerView = (RecyclerView) v.findViewById(R.id.recycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager((
+                new LinearLayoutManager(getActivity())
+                ));
 
-        final TextView textView = binding.textWorkouts;
-        workoutsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+        return v;
+        // binding = FragmentWorkoutsBinding.inflate(inflater, container, false);
+        //View root = binding.getRoot();
+
+        //final TextView textView = binding.textWorkouts;
+//        workoutsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                //textView.setText(s);
+//            }
+//        });
+        //return root;
+
+
+
     }
 
 }
