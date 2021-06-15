@@ -67,6 +67,7 @@ public class MainActivityLogin extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+        //TODO: Insert code for accessing different items
         switch (item.getItemId()) {
             case R.id.action_bio:
                 return true;

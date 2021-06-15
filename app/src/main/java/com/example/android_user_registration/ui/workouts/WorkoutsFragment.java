@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_user_registration.R;
+import com.example.android_user_registration.WorkoutListAdapter;
 import com.example.android_user_registration.databinding.FragmentSlideshowBinding;
 import com.example.android_user_registration.databinding.FragmentWorkoutsBinding;
 import com.example.android_user_registration.ui.slideshow.SlideshowViewModel;
@@ -26,6 +27,13 @@ public class WorkoutsFragment extends Fragment {
     private FragmentWorkoutsBinding binding;
     // for displaying workouts
     RecyclerView recyclerView;
+    WorkoutListAdapter adapter;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        adapter = new WorkoutListAdapter();
+    }
 
     public static WorkoutsFragment newInstance() {
         return new WorkoutsFragment();
@@ -39,6 +47,7 @@ public class WorkoutsFragment extends Fragment {
         // create recycler view for workouts
         final View v = inflater.inflate(R.layout.fragment_workouts, container, false);
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler);
+        recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager((
                 new LinearLayoutManager(getActivity())
