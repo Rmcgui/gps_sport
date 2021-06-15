@@ -1,3 +1,7 @@
+// Name: Ryan McGuire
+// Class for logging users into application.
+// activity_login.xml
+
 package com.example.android_user_registration;
 
 import androidx.appcompat.app.AlertDialog;
@@ -18,7 +22,6 @@ import com.parse.ParseUser;
 
 import com.parse.LogInCallback;
 
-
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText username;
@@ -31,14 +34,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // display login activity
         setContentView(R.layout.activity_login);
         progressDialog = new ProgressDialog(LoginActivity.this);
-
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         login = findViewById(R.id.login);
         navigatesignup = findViewById(R.id.navigatesignup);
 
+        // when user presses login
         login.setOnClickListener(v -> login(username.getText().toString(), password.getText().toString()));
 
         navigatesignup.setOnClickListener(v -> {
@@ -47,19 +52,26 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    // login method
     private void login(String username, String password) {
         progressDialog.show();
+        // sign user into parse
         ParseUser.logInInBackground(username, password, (parseUser, e) -> {
             progressDialog.dismiss();
             if (parseUser != null) {
+                // user logs in successfully
                 showAlert("Successful Login", "Welcome back " + username + " !");
             } else {
                 ParseUser.logOut();
-                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                // Something went wrong.
+                //showAlert("LOGIN FAILED", "User Not Recognised " + username + " !");
+                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    // called when user successfully logs in
+    // begins main activity
     private void showAlert(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this)
                 .setTitle(title)
@@ -68,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        // don't forget to change the line below with the names of your Activities
                         Intent intent = new Intent(LoginActivity.this, MainActivityLogin.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
@@ -77,4 +88,5 @@ public class LoginActivity extends AppCompatActivity {
         AlertDialog ok = builder.create();
         ok.show();
     }
+
 }

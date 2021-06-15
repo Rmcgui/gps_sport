@@ -1,3 +1,6 @@
+// Name: Ryan McGuire
+// Class to register new users
+
 package com.example.android_user_registration;
 
 import androidx.appcompat.app.AlertDialog;
@@ -41,36 +44,40 @@ public class SignUpActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         passwordagain = findViewById(R.id.passwordagain);
 
-
+        // When user clicks sign on
         signUp.setOnClickListener(v -> {
+            // Check for valid data entered by user
             if (password.getText().toString().equals(passwordagain.getText().toString()) && !TextUtils.isEmpty(username.getText().toString()))
                 signUp(username.getText().toString(), password.getText().toString());
             else
-                Toast.makeText(this, "Make sure that the values you entered are correct.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Passwords don't match. Please check the values you entered are correct.", Toast.LENGTH_SHORT).show();
         });
 
         back.setOnClickListener(v -> finish());
 
     }
 
+    // Sign users up to parse
     private void signUp(String username, String password) {
         progressDialog.show();
         ParseUser user = new ParseUser();
-        // Set the user's username and password, which can be obtained by a forms
+        // Set the user's username and password
         user.setUsername(username);
         user.setPassword(password);
         user.signUpInBackground(e -> {
             progressDialog.dismiss();
+            // if no error, register user
             if (e == null) {
                 showAlert("Successful Sign Up ! You logged in...\n", "Welcome " + username + " !");
             } else {
+                // otherwise throw exception
                 ParseUser.logOut();
                 Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
-
+    // Begin main activity
     private void showAlert(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this)
                 .setTitle(title)
@@ -79,7 +86,6 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        // don't forget to change the line below with the names of your Activities
                         Intent intent = new Intent(SignUpActivity.this, MainActivityLogin.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);

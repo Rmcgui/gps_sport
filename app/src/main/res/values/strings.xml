@@ -13,8 +13,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
+    <string name="action_bio">My Bio</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_workouts">Recent Workouts</string>
     <string name="menu_slideshow">Slideshow</string>
+
+
 </resources>

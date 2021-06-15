@@ -1,3 +1,5 @@
+// Name: Ryan McGuire
+// Class that handles main activity UI interactions
 package com.example.android_user_registration;
 
 import android.content.DialogInterface;
@@ -32,6 +34,7 @@ public class MainActivityLogin extends AppCompatActivity {
         binding = ActivityMainLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Configure drawer
         setSupportActionBar(binding.appBarMainActivityLogin.toolbar);
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -65,6 +68,8 @@ public class MainActivityLogin extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.action_bio:
+                return true;
             case R.id.action_settings:
                 return true;
             case R.id.action_logout:
@@ -84,7 +89,7 @@ public class MainActivityLogin extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        // what activity should app change to?
+                        // what activity should app change to? - Login screen
                         Intent intent = new Intent(MainActivityLogin.this, LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
@@ -93,4 +98,7 @@ public class MainActivityLogin extends AppCompatActivity {
         AlertDialog ok = builder.create();
         ok.show();
     }
+
+    // TODO: Insert methods for accessing other menu items, such as 'Settings' etc.
+
 }

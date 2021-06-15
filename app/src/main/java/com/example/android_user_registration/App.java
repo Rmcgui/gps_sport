@@ -1,3 +1,6 @@
+// Name: Ryan McGuire
+// Class to initialise the application with parse server
+
 package com.example.android_user_registration;
 
 import android.app.Application;
