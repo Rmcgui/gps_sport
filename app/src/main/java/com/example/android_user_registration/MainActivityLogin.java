@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.android_user_registration.interfaces.OnViewWorkout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -22,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android_user_registration.databinding.ActivityMainLoginBinding;
 
-public class MainActivityLogin extends AppCompatActivity {
+public class MainActivityLogin extends AppCompatActivity implements OnViewWorkout {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainLoginBinding binding;
@@ -67,7 +68,7 @@ public class MainActivityLogin extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        //TODO: Insert code for accessing different items
+        // TODO: Insert methods for accessing other menu items, such as 'Settings' etc.
         switch (item.getItemId()) {
             case R.id.action_bio:
                 return true;
@@ -100,6 +101,11 @@ public class MainActivityLogin extends AppCompatActivity {
         ok.show();
     }
 
-    // TODO: Insert methods for accessing other menu items, such as 'Settings' etc.
+    @Override
+    public void viewWorkout(long id) {
+        // start activity with id of
+        // workout clicked on
+        startActivity(new Intent (this, ViewWorkoutActivity.class).putExtra(ViewWorkoutActivity.EXTRA_WORKOUTID, id));
+    }
 
 }

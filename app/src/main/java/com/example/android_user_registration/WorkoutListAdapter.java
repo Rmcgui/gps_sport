@@ -1,12 +1,16 @@
 package com.example.android_user_registration;
 
+import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.android_user_registration.interfaces.OnViewWorkout;
 
 public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.ViewHolder> {
 
@@ -32,8 +36,21 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+
+        final Context context = viewHolder.titleView.getContext();
         ViewHolder.titleView.setText(fakeData[i]);
+
+        // set the click action
+        // when workout is selected by user
+        viewHolder.cardView.setOnClickListener(
+                new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {
+                        ((OnViewWorkout) context).viewWorkout(i);
+                    }
+                }
+        );
 
     }
 

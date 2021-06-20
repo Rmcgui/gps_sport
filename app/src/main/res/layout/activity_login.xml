@@ -13,13 +13,14 @@
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
-        android:background="@drawable/button_bg"
+        android:backgroundTint="@android:color/darker_gray"
         android:text="CREATE ACCOUNT"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text" />
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        />
 
 
     <TextView
@@ -39,7 +40,7 @@
         android:layout_width="80dp"
         android:layout_height="40dp"
         android:layout_weight="1"
-        android:background="@drawable/button_bg"
+        android:backgroundTint="@android:color/darker_gray"
         android:text="LOGIN"
         android:layout_marginTop="16dp"
         android:textColor="@color/black"
