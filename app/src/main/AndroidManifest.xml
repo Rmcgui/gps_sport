@@ -17,9 +17,6 @@
             android:name=".WorkoutSummary"
             android:exported="true" />
         <activity
-            android:name=".ViewWorkoutActivity"
-            android:exported="true" />
-        <activity
             android:name=".MainActivityLogin"
             android:exported="true"
             android:label="@string/title_activity_main_login"

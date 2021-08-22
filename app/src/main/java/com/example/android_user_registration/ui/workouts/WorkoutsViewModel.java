@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+// use this class to interact with database
+// create instance of database for reading
 public class WorkoutsViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 

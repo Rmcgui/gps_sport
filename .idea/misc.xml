@@ -3,15 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/drawable/button_bg.xml" value="0.4427083333333333" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.4661458333333333" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout-v21/activity_login.xml" value="0.33967391304347827" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout-v21/activity_view_workout.xml" value="0.18020833333333333" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/activity_login.xml" value="0.375" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/activity_logout.xml" value="0.2171875" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/activity_signup.xml" value="0.21979166666666666" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/activity_view_workout.xml" value="0.33469202898550726" />
-        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/activity_workout_summary.xml" value="0.33" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/activity_workout_summary.xml" value="0.2871376811594203" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/app_bar_main_activity_login.xml" value="0.2520833333333333" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/content_main_activity_login.xml" value="0.2520833333333333" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/fragment_home.xml" value="0.2625" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/fragment_slideshow.xml" value="0.2520833333333333" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/fragment_workouts.xml" value="0.26197916666666665" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FitME/app/src/main/res/layout/nav_header_main_activity_login.xml" value="0.2520833333333333" />

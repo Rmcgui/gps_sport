@@ -105,7 +105,7 @@ public class MainActivityLogin extends AppCompatActivity implements OnViewWorkou
     public void viewWorkout(long id) {
         // start activity with id of
         // workout clicked on
-        startActivity(new Intent (this, ViewWorkoutActivity.class).putExtra(ViewWorkoutActivity.EXTRA_WORKOUTID, id));
+        startActivity(new Intent (this, WorkoutSummary.class).putExtra(WorkoutSummary.EXTRA_WORKOUTID, id));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.android_user_registration;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,7 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
 
         final Context context = viewHolder.titleView.getContext();
         ViewHolder.titleView.setText(fakeData[i]);
