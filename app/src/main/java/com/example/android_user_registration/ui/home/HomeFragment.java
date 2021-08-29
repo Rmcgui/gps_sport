@@ -50,6 +50,8 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     private FloatingActionButton FAB;
+    // Empty data point object arraylist
+    ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         homeViewModel =
@@ -131,14 +133,14 @@ public class HomeFragment extends Fragment {
                     String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath();
                     Uri uri = data.getData();
                     String filePath = uri.getPath();
-                    String fileLocation = (fileDir + filePath);
+                    String fileLocation = (fileDir+filePath);
 
                     //String filePath = PathUtils.getPath(getContext(), uri);
                     Toast.makeText(getActivity(), "Processing file: " + filePath + ".Workout added to your workouts.",
                             Toast.LENGTH_LONG).show();
 
                     // Start processing File:
-                    processFile(fileLocation);
+                    processFile();
                 }
                 break;
         }
@@ -158,10 +160,9 @@ public class HomeFragment extends Fragment {
         return duration;
     }
 
-    public void processFile(String fileDir) {
-        // Empty data point object arraylist
-        ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
-        //String fileDir = "/root/storage/emulated/0/documents/document:27";
+    public void processFile() {
+
+        String fileDir = "storage/emulated/0/Documents/document/document:27";
         String line = "";
         int i = 0;
         double distance = 0;
@@ -170,9 +171,12 @@ public class HomeFragment extends Fragment {
         float prev_lon = 0;
         int count = 0;
 
+        String yourFilePath = getContext().getFilesDir() + "/" + "Short Data.txt";
+        //File yourFile = new File( yourFilePath );
+
         try {
             // Open file for reading
-            BufferedReader br = new BufferedReader(new FileReader(fileDir));
+            BufferedReader br = new BufferedReader(new FileReader(yourFilePath));
 
             // Read until blank line is reached
             while((line = br.readLine()) != null) {
@@ -231,56 +235,30 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-//        // calculate total distance
-//        try {
-//            duration = calcDuration(points.get(0).getTime(), points.get(points.size() -1).getTime());// start and end time passed
-//        } catch (ParseException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
+        // calculate total distance
+        try {
+            duration = calcDuration(points.get(0).getTime(), points.get(points.size() -1).getTime());// start and end time passed
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
 
         System.out.println("\nTotal distance:  " + distance + " Kilometres"); // in kilometres
         System.out.println("\nTotal duration:  " + duration/1000 + " Seconds"); // seconds
         System.out.println("\nAverage Speed: " + String.format("%.02f", (distance/duration)*10000) + " Metres/Second" ); // m/s
 
+        System.out.println("\nFile Location: " + fileDir );
+
 
 
     }
 
-    }
-//        // Empty data point object arraylist
-//        ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
-//        String line = "";
-//        int i, count = 0;
-//        double distance, duration = 0;
-//        float prev_lat, prev_lon = 0;
-//
-//        try {
-//            // Open file for reading
-//            BufferedReader br = new BufferedReader(new FileReader(fileDir));
-//
-//            // Read until blank line is reached
-//            while ((line = br.readLine()) != null) {
-//
-//                // look for data if interest only: GPGLL
-//                if (line != null && line.contains("$GPGLL")) {
-//
-//                    // Split after each comma
-//                    String[] tokens = line.split(",");
-//
-//                    // add point to list of geopoints with LAT/LON
-//                    points.add(new GeoPoint(tokens[1], tokens[3], tokens[5]));
-//                    //Convert string to float, and then from degrees/mins to decimal degrees
-//                    points.get(count).Lat = points.get(count).Latitude2Decimal(tokens[1], tokens[2]); //LAT
-//                    points.get(count).Lon = points.get(count).Longitude2Decimal(tokens[3], tokens[4]);//LON
-//
-//                }
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    // Method for uploading data to back4app server
+    public void uploadData(ArrayList<GeoPoint> readings){
 
+
+
+    }
+
+}
