@@ -1,12 +1,13 @@
 package com.example.android_user_registration.ui.home;
 
-
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,15 @@ import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class HomeFragment extends Fragment {
 
@@ -68,43 +77,11 @@ public class HomeFragment extends Fragment {
         FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Open File Picker
                 Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
                 chooseFile.setType("*/*");
                 chooseFile = Intent.createChooser(chooseFile, "Choose a file");
                 startActivityForResult(chooseFile, HOMEFRAGMENT_RESULT_CODE);
-
-
-
-                // Check condition
-//                if (ContextCompat.checkSelfPermission(getActivity(),
-//                        Manifest.permission.CAMERA)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    // No permissions granted?
-//                    // Request permissions
-//                    ActivityCompat.requestPermissions(getActivity(),
-//                            new String[]{Manifest.permission.CAMERA}, 1);
-//                } else {
-//                    // when permission granted
-//                    // Create file Picker method
-//                    Intent intent = new Intent(getActivity(), FilePickerActivity.class);
-//                    // put extra
-//                    intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
-//                            .setCheckPermission(true).
-//                            setShowFiles(true).
-//                            setShowImages(false)
-//                            .setShowVideos(true)
-//                            .setMaxSelection(1)
-//                            .setSuffixes("txt", "xml", "doc", "docx")
-//                            .setSkipZeroSizeFiles(true)
-//                            .build());
-//                    // start activity result
-//                    //
-//                    startActivityForResult(intent, PICKFILE_RESULT_CODE);
-//                }
-                // prompt user to select a file. Store the directory once selected as fileName,
-                // then open for reading and processing
-                //Toast.makeText(getActivity(), "Would you like a coffee?", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -117,6 +94,7 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 
 
     @Override
@@ -142,7 +120,7 @@ public class HomeFragment extends Fragment {
     // Call method to read the file
     // Process the data
     // Store in backend database
-    // Add new workout to Workours fragment
+    // Add new workout to Workouts fragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -150,50 +128,159 @@ public class HomeFragment extends Fragment {
         switch(requestCode){
             case HOMEFRAGMENT_RESULT_CODE:
                 if(resultCode==-1){
+                    String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath();
                     Uri uri = data.getData();
                     String filePath = uri.getPath();
-                    Toast.makeText(getActivity(), filePath,
+                    String fileLocation = (fileDir + filePath);
+
+                    //String filePath = PathUtils.getPath(getContext(), uri);
+                    Toast.makeText(getActivity(), "Processing file: " + filePath + ".Workout added to your workouts.",
                             Toast.LENGTH_LONG).show();
+
+                    // Start processing File:
+                    processFile(fileLocation);
                 }
                 break;
         }
     }
 
+    // calculate the total duration of the workout
+    public static double calcDuration(String startTime, String endTime) throws ParseException {
 
-    //
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
+        double duration = 0; //seconds
+
+        // set date format for calculating distance
+        SimpleDateFormat format = new SimpleDateFormat("HHmmss");
+        Date start = format.parse(startTime);
+        Date end = format.parse(endTime);
+
+        duration = end.getTime() - start.getTime();
+        return duration;
+    }
+
+    public void processFile(String fileDir) {
+        // Empty data point object arraylist
+        ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
+        //String fileDir = "/root/storage/emulated/0/documents/document:27";
+        String line = "";
+        int i = 0;
+        double distance = 0;
+        double duration = 0;
+        float prev_lat = 0;
+        float prev_lon = 0;
+        int count = 0;
+
+        try {
+            // Open file for reading
+            BufferedReader br = new BufferedReader(new FileReader(fileDir));
+
+            // Read until blank line is reached
+            while((line = br.readLine()) != null) {
+
+                // look for data if interest only: GPGLL
+                if(line != null && line.contains("$GPGLL")) {
+
+                    // Split after each comma
+                    String [] tokens = line.split(",");
+
+                    // add point to list of geopoints with LAT/LON/TIME
+                    points.add(new GeoPoint(tokens[1], tokens[3], tokens[5]));
+                    //Convert string to float, and then from degrees/mins to decimal degrees
+                    points.get(count).lat = points.get(count).Latitude2Decimal(tokens[1], tokens[2]); //LAT
+                    points.get(count).lon = points.get(count).Longitude2Decimal(tokens[3], tokens[4]);//LON
+
+
+                    // factor for first set of coordinates where no previous lat/lon
+                    //if(points.get(count).prev_lat == 0 && points.get(count).prev_lon == 0) {
+                    if(prev_lat == 0 && prev_lon == 0) {
+                        prev_lat = points.get(count).lat;
+                        prev_lon = points.get(count).lon;
+                        distance = 0;
+                        System.out.println("\nLatitude: " + points.get(count).getLAT());
+                        System.out.println("Longitude: " + points.get(count).getLON());
+                        System.out.println("Distance to previous geopoint: " + points.get(count).getDistance());
+                        System.out.println("Timestamp: " + points.get(count).getTime());
+
+                    }
+                    else {
+//						points.get(count).prev_lat = points.get(count).lat;
+//						points.get(count).prev_lon = points.get(count).lon;
+//						distance += points.get(count).calcDistance(prev_lat, points.get(count).prev_lon ,points.get(count).lat, points.get(count).lon);
+                        distance += points.get(count).calcDistance(prev_lat, prev_lon ,points.get(count).lat, points.get(count).lon);
+                        prev_lat = points.get(count).lat;
+                        prev_lon = points.get(count).lon;
+                        System.out.println("\nLatitude: " + points.get(count).getLAT());
+                        System.out.println("Longitude: " + points.get(count).getLON());
+                        System.out.println("Distance to previous geopoint: " + points.get(count).getDistance());
+                        System.out.println("Timestamp: " + points.get(count).getTime());
+                    }
+
+//					System.out.println("\nLatitude: " + points.get(count).getLAT());
+//					System.out.println("Longitude: " + points.get(count).getLON());
+                    count++;
+
+                }
+
+
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+//        // calculate total distance
+//        try {
+//            duration = calcDuration(points.get(0).getTime(), points.get(points.size() -1).getTime());// start and end time passed
+//        } catch (ParseException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+
+
+        System.out.println("\nTotal distance:  " + distance + " Kilometres"); // in kilometres
+        System.out.println("\nTotal duration:  " + duration/1000 + " Seconds"); // seconds
+        System.out.println("\nAverage Speed: " + String.format("%.02f", (distance/duration)*10000) + " Metres/Second" ); // m/s
+
+
+
+    }
+
+    }
+//        // Empty data point object arraylist
+//        ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
+//        String line = "";
+//        int i, count = 0;
+//        double distance, duration = 0;
+//        float prev_lat, prev_lon = 0;
 //
-//        // Check condition
-//        if (resultCode == RESULT_OK && data != null){
+//        try {
+//            // Open file for reading
+//            BufferedReader br = new BufferedReader(new FileReader(fileDir));
 //
-//            ArrayList<MediaFile> mediaFiles = data.getParcelableArrayListExtra(
-//                    FilePickerActivity.MEDIA_FILES
-//            );
-//            // Get String Path
-//            String path = mediaFiles.get(0).getPath();
-//            Toast.makeText(getActivity().getApplicationContext(), path
-//                    , Toast.LENGTH_SHORT).show();
+//            // Read until blank line is reached
+//            while ((line = br.readLine()) != null) {
 //
+//                // look for data if interest only: GPGLL
+//                if (line != null && line.contains("$GPGLL")) {
 //
-//            // Open file for reading on this file path
+//                    // Split after each comma
+//                    String[] tokens = line.split(",");
 //
+//                    // add point to list of geopoints with LAT/LON
+//                    points.add(new GeoPoint(tokens[1], tokens[3], tokens[5]));
+//                    //Convert string to float, and then from degrees/mins to decimal degrees
+//                    points.get(count).Lat = points.get(count).Latitude2Decimal(tokens[1], tokens[2]); //LAT
+//                    points.get(count).Lon = points.get(count).Longitude2Decimal(tokens[3], tokens[4]);//LON
+//
+//                }
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
 //        }
 //    }
 
-    //    private void filePicker() {
-//        //
-//        Intent intent = new Intent(getActivity(), FilePickerActivity.CONFIGS,
-//                new Configurations.Builder()
-//                        .setCheckPermission(true).
-//                        setShowFiles(true).
-//                        setShowImages(false)
-//                        .setShowVideos(true)
-//                        .setMaxSelection(1)
-//                        .setSuffixes("txt", "xml", "doc", "docx")
-//                        .setSkipZeroSizeFiles(true)
-//                        .build());
-//    }
-
-}
