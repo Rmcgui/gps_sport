@@ -1,6 +1,8 @@
 package com.example.android_user_registration.ui.home;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -11,6 +13,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,6 +33,8 @@ import com.example.android_user_registration.LoginActivity;
 import com.example.android_user_registration.MainActivityLogin;
 import com.example.android_user_registration.R;
 import com.example.android_user_registration.databinding.FragmentHomeBinding;
+import com.example.android_user_registration.ui.slideshow.SlideshowFragment;
+import com.example.android_user_registration.ui.workouts.WorkoutsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
@@ -127,6 +134,7 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         switch(requestCode){
             case HOMEFRAGMENT_RESULT_CODE:
                 if(resultCode==-1){
@@ -141,6 +149,10 @@ public class HomeFragment extends Fragment {
 
                     // Start processing File:
                     processFile();
+                    showProgress();
+                    //showDialog();
+
+
                 }
                 break;
         }
@@ -160,9 +172,10 @@ public class HomeFragment extends Fragment {
         return duration;
     }
 
+    // File Handler
     public void processFile() {
 
-        String fileDir = "storage/emulated/0/Documents/document/document:27";
+        String fileDir = "/storage/emulated/0/Documents/Data.txt";
         String line = "";
         int i = 0;
         double distance = 0;
@@ -171,12 +184,12 @@ public class HomeFragment extends Fragment {
         float prev_lon = 0;
         int count = 0;
 
-        String yourFilePath = getContext().getFilesDir() + "/" + "Short Data.txt";
+       // String yourFilePath = getContext().getFilesDir() + "/" + "Short Data.txt";
         //File yourFile = new File( yourFilePath );
 
         try {
             // Open file for reading
-            BufferedReader br = new BufferedReader(new FileReader(yourFilePath));
+            BufferedReader br = new BufferedReader(new FileReader(fileDir));
 
             // Read until blank line is reached
             while((line = br.readLine()) != null) {
@@ -235,13 +248,13 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        // calculate total distance
-        try {
-            duration = calcDuration(points.get(0).getTime(), points.get(points.size() -1).getTime());// start and end time passed
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        // calculate total distance
+//        try {
+//            duration = calcDuration(points.get(0).getTime(), points.get(points.size() -1).getTime());// start and end time passed
+//        } catch (ParseException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
 
         System.out.println("\nTotal distance:  " + distance + " Kilometres"); // in kilometres
@@ -255,8 +268,85 @@ public class HomeFragment extends Fragment {
     }
 
     // Method for uploading data to back4app server
-    public void uploadData(ArrayList<GeoPoint> readings){
+    public void uploadData(ArrayList<GeoPoint> data){
 
+
+
+    }
+
+    private void showDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("File Uploaded Successfully!").setCancelable(false);
+        builder.setPositiveButton("View workouts", null);
+        builder.setNegativeButton("Cancel", null);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button button_positive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button button_negative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+
+                button_negative.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                button_positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Create new fragment and transaction
+                        Fragment newFragment = new SlideshowFragment();
+                        // consider using Java coding conventions (upper first char class names!!!)
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                        // Replace whatever is in the fragment_container view with this fragment,
+                        // and add the transaction to the back stack
+                        transaction.replace(R.id.nav_home, newFragment);
+                        transaction.addToBackStack(null);
+
+                        // Commit the transaction
+                        transaction.commit();  }
+                });
+
+            }
+        });
+        alertDialog.show();
+
+    }
+
+    private void showProgress(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                // Inform user file processed
+        builder.setMessage("File Uploaded Successfully!")
+                .setCancelable(false)
+                // Give user option to go to workouts
+                .setPositiveButton("View workouts", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // switch to workouts fragment
+                        WorkoutsFragment fragment = new WorkoutsFragment();
+                        FragmentManager fragmentManager = getParentFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.home_fragment, fragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+
+                    }
+                })
+                // or to add another workout
+                .setNegativeButton("Add another workout", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //do nothing, stay on home fragment
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
 
 
     }
