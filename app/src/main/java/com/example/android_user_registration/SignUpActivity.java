@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import com.parse.SignUpCallback;
@@ -29,6 +30,8 @@ public class SignUpActivity extends AppCompatActivity {
     private TextInputEditText username;
     private TextInputEditText password;
     private TextInputEditText passwordagain;
+    private TextInputEditText weight;
+
     private ProgressDialog progressDialog;
 
     @Override
@@ -41,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         back = findViewById(R.id.back);
         signUp = findViewById(R.id.signup);
         username = findViewById(R.id.username);
+        weight = findViewById(R.id.weight);
         password = findViewById(R.id.password);
         passwordagain = findViewById(R.id.passwordagain);
 
@@ -48,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUp.setOnClickListener(v -> {
             // Check for valid data entered by user
             if (password.getText().toString().equals(passwordagain.getText().toString()) && !TextUtils.isEmpty(username.getText().toString()))
-                signUp(username.getText().toString(), password.getText().toString());
+                signUp(username.getText().toString(), password.getText().toString(), weight.getText().toString());
             else
                 Toast.makeText(this, "Passwords don't match. Please check the values you entered are correct.", Toast.LENGTH_SHORT).show();
         });
@@ -58,12 +62,23 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     // Sign users up to parse
-    private void signUp(String username, String password) {
+    private void signUp(String username, String password, String weight) {
         progressDialog.show();
         ParseUser user = new ParseUser();
+        ParseObject userWeight = new ParseObject("UserWeight");
         // Set the user's username and password
         user.setUsername(username);
         user.setPassword(password);
+        // Set the user's weight, add to UserWeight class
+        userWeight.put("weight", weight);
+        userWeight.put("username", user.getUsername());
+        // save to db table
+        try {
+            userWeight.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        // sign user up
         user.signUpInBackground(e -> {
             progressDialog.dismiss();
             // if no error, register user
@@ -75,6 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
     }
 
     // Begin main activity

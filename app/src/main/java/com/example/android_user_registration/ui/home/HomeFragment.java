@@ -39,6 +39,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -57,6 +59,8 @@ public class HomeFragment extends Fragment {
     private FloatingActionButton FAB;
     // Empty data point object arraylist
     ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
+    // Object for storing workout data in DB
+
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        homeViewModel =
@@ -196,7 +200,7 @@ public class HomeFragment extends Fragment {
                 if(line != null && line.contains("$GPGLL")) {
 
                     // Split after each comma
-                    String [] tokens = line.split(",");
+                    String[] tokens = line.split(",");
 
                     // add point to list of geopoints with LAT/LON/TIME
                     points.add(new GeoPoint(tokens[1], tokens[3], tokens[5]));
@@ -207,7 +211,7 @@ public class HomeFragment extends Fragment {
 
                     // factor for first set of coordinates where no previous lat/lon
                     //if(points.get(count).prev_lat == 0 && points.get(count).prev_lon == 0) {
-                    if(prev_lat == 0 && prev_lon == 0) {
+                    if (prev_lat == 0 && prev_lon == 0) {
                         prev_lat = points.get(count).lat;
                         prev_lon = points.get(count).lon;
                         distance = 0;
@@ -216,12 +220,8 @@ public class HomeFragment extends Fragment {
                         System.out.println("Distance to previous geopoint: " + points.get(count).getDistance());
                         System.out.println("Timestamp: " + points.get(count).getTime());
 
-                    }
-                    else {
-//						points.get(count).prev_lat = points.get(count).lat;
-//						points.get(count).prev_lon = points.get(count).lon;
-//						distance += points.get(count).calcDistance(prev_lat, points.get(count).prev_lon ,points.get(count).lat, points.get(count).lon);
-                        distance += points.get(count).calcDistance(prev_lat, prev_lon ,points.get(count).lat, points.get(count).lon);
+                    } else {
+                        distance += points.get(count).calcDistance(prev_lat, prev_lon, points.get(count).lat, points.get(count).lon);
                         prev_lat = points.get(count).lat;
                         prev_lon = points.get(count).lon;
                         System.out.println("\nLatitude: " + points.get(count).getLAT());
@@ -229,13 +229,8 @@ public class HomeFragment extends Fragment {
                         System.out.println("Distance to previous geopoint: " + points.get(count).getDistance());
                         System.out.println("Timestamp: " + points.get(count).getTime());
                     }
-
-//					System.out.println("\nLatitude: " + points.get(count).getLAT());
-//					System.out.println("Longitude: " + points.get(count).getLON());
                     count++;
-
                 }
-
 
             }
             br.close();
@@ -246,14 +241,7 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-//        // calculate total distance
-//        try {
-//            duration = calcDuration(points.get(0).getTime(), points.get(points.size() -1).getTime());// start and end time passed
-//        } catch (ParseException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-
+        uploadData(points, distance);
 
         System.out.println("\nTotal distance:  " + distance + " Kilometres"); // in kilometres
         System.out.println("\nTotal duration:  " + duration/1000 + " Seconds"); // seconds
@@ -266,7 +254,19 @@ public class HomeFragment extends Fragment {
     }
 
     // Method for uploading data to back4app server
-    public void uploadData(ArrayList<GeoPoint> data){
+    public void uploadData(ArrayList<GeoPoint> data, Double distance){
+        ParseObject workout = new ParseObject("TrainingSessions");
+        ParseUser user = new ParseUser();
+        // store data in DB
+        workout.put("userId", user.getObjectId()); //user id
+        workout.put("distance", distance.toString()); //distance
+        // duration
+        // avgSpeed
+        // calsBurned
+        // avgPace
+        // updatedAt
+        // time
+
 
 
 
@@ -349,5 +349,6 @@ public class HomeFragment extends Fragment {
 
 
     }
+
 
 }
