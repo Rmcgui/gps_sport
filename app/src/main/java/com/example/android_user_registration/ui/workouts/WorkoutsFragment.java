@@ -41,9 +41,11 @@ public class WorkoutsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // initialise view model
-        workoutsViewModel =
-                new ViewModelProvider(this).get(WorkoutsViewModel.class);
+//        // initialise view model
+//        workoutsViewModel =
+//                new ViewModelProvider(this).get(WorkoutsViewModel.class);
+
+        container.removeAllViews();
 
         // create recycler view for workouts
         final View v = inflater.inflate(R.layout.fragment_workouts, container, false);

@@ -54,18 +54,16 @@ public class HomeFragment extends Fragment {
 
     private static final int HOMEFRAGMENT_RESULT_CODE = 1;
     private static final int RESULT_OK = 1;
-    private HomeViewModel homeViewModel;
-    private FragmentHomeBinding binding;
     private FloatingActionButton FAB;
     // Empty data point object arraylist
     ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+//        homeViewModel =
+//                new ViewModelProvider(this).get(HomeViewModel.class);
+//
+//        binding = FragmentHomeBinding.inflate(inflater, container, false);
+//        View root = binding.getRoot();
         // floating action button for prompting user for file from internal storage
         //FloatingActionButton FAB = fragment_home.findViewById(R.id.fab);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -73,14 +71,14 @@ public class HomeFragment extends Fragment {
         // Assign FAB
         FAB = (FloatingActionButton) view.findViewById(R.id.fab);
 
-
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//
+//        final TextView textView = binding.textHome;
+//        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
 
         // what happens when the button is clicked??
         FAB.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +99,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        binding = null;
     }
 
 
@@ -138,10 +135,10 @@ public class HomeFragment extends Fragment {
         switch(requestCode){
             case HOMEFRAGMENT_RESULT_CODE:
                 if(resultCode==-1){
-                    String fileDir = Environment.getExternalStorageDirectory().getAbsolutePath();
                     Uri uri = data.getData();
                     String filePath = uri.getPath();
-                    String fileLocation = (fileDir+filePath);
+                    // Get directory and file path
+                    String fileDir = Environment.getExternalStorageDirectory() + filePath;
 
                     //String filePath = PathUtils.getPath(getContext(), uri);
                     Toast.makeText(getActivity(), "Processing file: " + filePath + ".Workout added to your workouts.",
@@ -149,8 +146,8 @@ public class HomeFragment extends Fragment {
 
                     // Start processing File:
                     processFile();
-                    showProgress();
-                    //showDialog();
+                    //showProgress();
+                    showDialog();
 
 
                 }
@@ -176,6 +173,7 @@ public class HomeFragment extends Fragment {
     public void processFile() {
 
         String fileDir = "/storage/emulated/0/Documents/Data.txt";
+//        String fileDir = "/root/document/primary:Documents/Data.txt";
         String line = "";
         int i = 0;
         double distance = 0;
@@ -184,7 +182,7 @@ public class HomeFragment extends Fragment {
         float prev_lon = 0;
         int count = 0;
 
-       // String yourFilePath = getContext().getFilesDir() + "/" + "Short Data.txt";
+        String yourFilePath = getContext().getFilesDir() + "/" + "Data.txt";
         //File yourFile = new File( yourFilePath );
 
         try {
@@ -301,22 +299,23 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         // Create new fragment and transaction
-                        Fragment newFragment = new SlideshowFragment();
-                        // consider using Java coding conventions (upper first char class names!!!)
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        Fragment newFragment = new WorkoutsFragment();
+                        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
-                        // Replace whatever is in the fragment_container view with this fragment,
+                        // Replace whatever is in the home_fragment view with this fragment,
                         // and add the transaction to the back stack
-                        transaction.replace(R.id.nav_home, newFragment);
+                        transaction.replace(((ViewGroup)getView().getParent()).getId(), newFragment);
                         transaction.addToBackStack(null);
 
                         // Commit the transaction
-                        transaction.commit();  }
+                        transaction.commit();
+                        alertDialog.dismiss();}
                 });
 
             }
         });
         alertDialog.show();
+
 
     }
 

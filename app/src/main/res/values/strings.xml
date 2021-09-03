@@ -16,7 +16,7 @@
     <string name="action_bio">My Bio</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_workouts">Recent Workouts</string>
+    <string name="menu_workouts">Workouts</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_activity_view_workout">ViewWorkoutActivity</string>
     <!-- Strings used for fragments for navigation -->
