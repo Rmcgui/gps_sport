@@ -89,4 +89,12 @@ public class LoginActivity extends AppCompatActivity {
         ok.show();
     }
 
+    public String getUsername(){
+        return String.valueOf(this.username);
+    }
+
+    public static ParseUser getObjectID(){
+        return getObjectID();
+    }
+
 }
