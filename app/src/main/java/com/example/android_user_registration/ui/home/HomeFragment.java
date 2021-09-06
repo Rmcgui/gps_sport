@@ -5,49 +5,32 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 
-import com.example.android_user_registration.LoginActivity;
-import com.example.android_user_registration.MainActivityLogin;
 import com.example.android_user_registration.R;
-import com.example.android_user_registration.databinding.FragmentHomeBinding;
-import com.example.android_user_registration.ui.slideshow.SlideshowFragment;
 import com.example.android_user_registration.ui.workouts.WorkoutsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.jaiselrahman.filepicker.activity.FilePickerActivity;
-import com.jaiselrahman.filepicker.config.Configurations;
-import com.jaiselrahman.filepicker.model.MediaFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,7 +42,7 @@ public class HomeFragment extends Fragment {
     private static final int RESULT_OK = 1;
     private FloatingActionButton FAB;
     // Empty data point object arraylist
-    public ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
+    ArrayList<GeoPoint> points = new ArrayList<>();
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -152,10 +135,8 @@ public class HomeFragment extends Fragment {
 
                     // Start processing File:
                     processFile();
-                    //showProgress();
-                    //showDialog();
-
-
+                    // Inform user success
+                    showProgress();
                 }
                 break;
         }
@@ -179,25 +160,24 @@ public class HomeFragment extends Fragment {
     public void processFile() {
 
 //        String fileDir = "/storage/emulated/0/Documents/Data.txt";
-//        String fileDir = "/root/document/primary:Documents/Data.txt";
+        String fileDir = "/data/data/com.example.android_user_registration/files/Data.txt";
         String line = "";
-        int i = 0;
         double distance = 0;
         double duration = 0;
         float prev_lat = 0;
         float prev_lon = 0;
-        int count = 0;
+        int count = 0; //for num of lines read GPGLL
+        int counter = 0; // for num of lines read GPRMC
 
         String yourFilePath = getContext().getFilesDir() + "/" + "Data.txt";
         //File yourFile = new File( yourFilePath );
 
         try {
             // Open file for reading
-            BufferedReader br = new BufferedReader(new FileReader(yourFilePath));
+            BufferedReader br = new BufferedReader(new FileReader(fileDir));
 
             // Read until blank line is reached
             while((line = br.readLine()) != null) {
-
                 // look for data if interest only: GPGLL
                 if(line != null && line.contains("$GPGLL")) {
 
@@ -205,7 +185,7 @@ public class HomeFragment extends Fragment {
                     String[] tokens = line.split(",");
 
                     // add point to list of geopoints with LAT/LON/TIME
-                    points.add(new GeoPoint(tokens[1], tokens[3], tokens[5]));
+                    points.add(new GeoPoint(tokens[1], tokens[3], tokens[5], ""));
                     //Convert string to float, and then from degrees/mins to decimal degrees
                     points.get(count).lat = points.get(count).Latitude2Decimal(tokens[1], tokens[2]); //LAT
                     points.get(count).lon = points.get(count).Longitude2Decimal(tokens[3], tokens[4]);//LON
@@ -233,6 +213,12 @@ public class HomeFragment extends Fragment {
                     }
                     count++;
                 }
+//                } else if((line != null && line.contains("$GPRMC"))){
+//
+//                    String[] tokens = line.split(",");
+//                    points.get(counter).setDate(tokens[8]);
+//                    counter++;
+//                }
 
             }
             br.close();
@@ -250,15 +236,10 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        System.out.println("\nTotal distance:  " + distance + " Kilometres"); // in kilometres
-        System.out.println("\nTotal duration:  " + duration/1000 + " Seconds"); // seconds
-        System.out.println("\nAverage Speed: " + String.format("%.02f", (distance/duration)*10000) + " Metres/Second" ); // m/s
-
         System.out.println("\nFile Location: " + yourFilePath );
 
+        // Upload data to backend
         uploadData(distance, duration);
-
-
 
     }
 
@@ -269,10 +250,11 @@ public class HomeFragment extends Fragment {
         duration = duration / 1000; // duration in seconds
         // store data in DB
         workout.put("userId", ParseUser.getCurrentUser().getObjectId()); //user id
-        workout.put("distance", distance.toString()); //distance
-        workout.put("duration", duration.toString());// duration
-        workout.put("avgSpeed", Double.toString(avgSpeed));
-        workout.put("time", getTime(points));
+        workout.put("distance", distance.toString());       //distance
+        workout.put("duration", duration.toString());       //duration
+        workout.put("avgSpeed", Double.toString(avgSpeed)); //average speed
+        workout.put("time", getTime(points));               //time
+        workout.put("date", points.get(0).getDate());       //date
         // avgSpeed
         // calsBurned
         // avgPace
@@ -288,13 +270,6 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-
-
-
-
-
-
 
     private void showDialog() {
 

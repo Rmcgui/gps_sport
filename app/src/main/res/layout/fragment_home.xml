@@ -31,7 +31,7 @@
         android:layout_margin="126dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:backgroundTint="@color/design_default_color_primary"
+        app:backgroundTint="@android:color/holo_blue_dark"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintStart_toStartOf="parent" />

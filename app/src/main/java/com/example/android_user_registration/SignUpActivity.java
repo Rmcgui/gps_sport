@@ -21,6 +21,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -72,12 +73,19 @@ public class SignUpActivity extends AppCompatActivity {
         // Set the user's weight, add to UserWeight class
         userWeight.put("weight", weight);
         userWeight.put("username", user.getUsername());
+
         // save to db table
-        try {
-            userWeight.save();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        userWeight.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e == null){
+                    //success
+                } else {
+                    //Error
+                }
+            }
+        });
+
         // sign user up
         user.signUpInBackground(e -> {
             progressDialog.dismiss();

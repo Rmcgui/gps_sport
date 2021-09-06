@@ -11,6 +11,7 @@ public class GeoPoint {
     public String Lat = "";
     public String Lon = "";
     public String Time = "";
+    public String Date = "";
     public double Distance = 0.0;
 
     public float lat = 0.0f;
@@ -22,10 +23,11 @@ public class GeoPoint {
 
     }
 
-    public GeoPoint(String lat, String lon, String time) {
+    public GeoPoint(String lat, String lon, String time, String date) {
         this.Lat = lat;
         this.Lon = lon;
         this.Time = time;
+        this.Date = date;
     }
 
 
@@ -44,6 +46,13 @@ public class GeoPoint {
         return this.Lon;
     }
 
+    public void setDate(String date) {
+        this.Date = date;
+    }
+    public String getDate() {
+        return this.Date;
+    }
+
     public void setTime(String time) {
         this.Time = time;
     }
@@ -54,7 +63,6 @@ public class GeoPoint {
     public void setDistance(double distance) {
         this.Distance = distance;
     }
-
     public double getDistance() {
         return this.Distance;
     }

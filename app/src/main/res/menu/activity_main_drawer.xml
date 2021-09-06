@@ -12,9 +12,5 @@
             android:id="@+id/nav_workouts"
             android:icon="@drawable/ic_baseline_directions_run_24"
             android:title="@string/menu_workouts" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
     </group>
 </menu>

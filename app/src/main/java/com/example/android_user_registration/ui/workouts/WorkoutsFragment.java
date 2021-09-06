@@ -17,9 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_user_registration.R;
 import com.example.android_user_registration.WorkoutListAdapter;
-import com.example.android_user_registration.databinding.FragmentSlideshowBinding;
 import com.example.android_user_registration.databinding.FragmentWorkoutsBinding;
-import com.example.android_user_registration.ui.slideshow.SlideshowViewModel;
 
 public class WorkoutsFragment extends Fragment {
 

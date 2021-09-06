@@ -16,16 +16,9 @@ import com.example.android_user_registration.interfaces.OnViewWorkout;
 public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.ViewHolder> {
 
     static String [] fakeData = new String[]{
-            "Workout One",
-            "Workout Two",
-            "Workout Three",
-            "Workout Four",
-            "Workout Five",
-            "Workout Six",
-            "Workout Seven",
-            "Workout Eight",
-            "Workout Nine",
-            "Workout Ten"
+            "Date: 09/05/2021",
+            "Date: 08/05/2021",
+            "Date: 07/05/2021",
     };
 
     @NonNull
