@@ -39,9 +39,7 @@ public class WorkoutsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        // initialise view model
-//        workoutsViewModel =
-//                new ViewModelProvider(this).get(WorkoutsViewModel.class);
+
 
         container.removeAllViews();
 

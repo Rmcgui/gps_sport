@@ -44,7 +44,7 @@ public class WorkoutSummary extends AppCompatActivity {
                 if (e == null) {
                     nameTextView.setText(ParseUser.getCurrentUser().getUsername());
                     durationTextView.setText(player.getString("duration"));
-                    timeTextView.setText(player.getString("time") + player.getString("date"));
+                    timeTextView.setText(player.getString("dateTime"));
                     distanceTextView.setText(player.getString("distance"));
                     avgSpeedTextView.setText(player.getString("avgSpeed"));
 

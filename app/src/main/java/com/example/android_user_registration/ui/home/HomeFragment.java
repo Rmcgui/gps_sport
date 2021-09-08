@@ -1,5 +1,5 @@
 package com.example.android_user_registration.ui.home;
-
+import java.text.DateFormat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -34,7 +34,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class HomeFragment extends Fragment {
 
@@ -134,7 +137,11 @@ public class HomeFragment extends Fragment {
                             Toast.LENGTH_LONG).show();
 
                     // Start processing File:
-                    processFile();
+                    try {
+                        processFile();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     // Inform user success
                     showProgress();
                 }
@@ -156,11 +163,29 @@ public class HomeFragment extends Fragment {
         return duration;
     }
 
+    // method to format date/time into one string
+    private String formatTimeDate(String time, String date) throws ParseException {
+
+        String timeDate = "";
+
+        SimpleDateFormat formatTime = new SimpleDateFormat("HHmmss");
+        SimpleDateFormat formatDate = new SimpleDateFormat("ddMMyy");
+        formatTime.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            Date _time = formatTime.parse(time);
+            Date _date = formatDate.parse(date);
+            SimpleDateFormat formattedTime = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat formattedDate = new SimpleDateFormat("dd/MM/yy");
+
+            return timeDate = formattedDate.format(_time) + formattedTime.format(_date);
+    }
+
+
     // File Handler
-    public void processFile() {
+    public void processFile() throws ParseException {
 
 //        String fileDir = "/storage/emulated/0/Documents/Data.txt";
-        String fileDir = "/data/data/com.example.android_user_registration/files/Data.txt";
+        String fileDir = "/data/data/com.example.android_user_registration/files/Sample NMEA Data.txt";
         String line = "";
         double distance = 0;
         double duration = 0;
@@ -178,47 +203,35 @@ public class HomeFragment extends Fragment {
 
             // Read until blank line is reached
             while((line = br.readLine()) != null) {
+
+
                 // look for data if interest only: GPGLL
-                if(line != null && line.contains("$GPGLL")) {
+                if(line != null && line.contains("$GPRMC")) {
 
                     // Split after each comma
                     String[] tokens = line.split(",");
 
-                    // add point to list of geopoints with LAT/LON/TIME
-                    points.add(new GeoPoint(tokens[1], tokens[3], tokens[5], ""));
+                    // add point to list of geopoints with LAT/LON/TIME/DATE
+                    points.add(new GeoPoint(tokens[3], tokens[5], tokens[1], tokens[9]));
                     //Convert string to float, and then from degrees/mins to decimal degrees
-                    points.get(count).lat = points.get(count).Latitude2Decimal(tokens[1], tokens[2]); //LAT
-                    points.get(count).lon = points.get(count).Longitude2Decimal(tokens[3], tokens[4]);//LON
+                    points.get(count).lat = points.get(count).Latitude2Decimal(tokens[3], tokens[4]); //LAT
+                    points.get(count).lon = points.get(count).Longitude2Decimal(tokens[5], tokens[6]);//LON
 
-
+                    // CALCULATE DISTANCE
                     // factor for first set of coordinates where no previous lat/lon
                     //if(points.get(count).prev_lat == 0 && points.get(count).prev_lon == 0) {
                     if (prev_lat == 0 && prev_lon == 0) {
                         prev_lat = points.get(count).lat;
                         prev_lon = points.get(count).lon;
                         distance = 0;
-                        System.out.println("\nLatitude: " + points.get(count).getLAT());
-                        System.out.println("Longitude: " + points.get(count).getLON());
-                        System.out.println("Distance to previous geopoint: " + points.get(count).getDistance());
-                        System.out.println("Timestamp: " + points.get(count).getTime());
-
                     } else {
                         distance += points.get(count).calcDistance(prev_lat, prev_lon, points.get(count).lat, points.get(count).lon);
                         prev_lat = points.get(count).lat;
                         prev_lon = points.get(count).lon;
-                        System.out.println("\nLatitude: " + points.get(count).getLAT());
-                        System.out.println("Longitude: " + points.get(count).getLON());
-                        System.out.println("Distance to previous geopoint: " + points.get(count).getDistance());
-                        System.out.println("Timestamp: " + points.get(count).getTime());
                     }
                     count++;
                 }
-//                } else if((line != null && line.contains("$GPRMC"))){
-//
-//                    String[] tokens = line.split(",");
-//                    points.get(counter).setDate(tokens[8]);
-//                    counter++;
-//                }
+
 
             }
             br.close();
@@ -244,7 +257,7 @@ public class HomeFragment extends Fragment {
     }
 
     // Method for uploading data to back4app server
-    public void uploadData(Double distance, Double duration){
+    public void uploadData(Double distance, Double duration) throws ParseException {
         ParseObject workout = new ParseObject("TrainingSessions");
         double avgSpeed = distance/duration;
         duration = duration / 1000; // duration in seconds
@@ -255,15 +268,18 @@ public class HomeFragment extends Fragment {
         workout.put("avgSpeed", Double.toString(avgSpeed)); //average speed
         workout.put("time", getTime(points));               //time
         workout.put("date", points.get(0).getDate());       //date
-        // avgSpeed
+        workout.put("dateTime", getDateTime(points));       // date and time formatted
         // calsBurned
         // avgPace
-        // updatedAt
-        // time
         workout.saveInBackground(e->{
             if (e == null) {
                 //Data saved
                 System.out.println("Data saved to database successfully");
+                try {
+                    System.out.println("dateTime:" + getDateTime(points));
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
             } else {
                 //Display what went wrong
                 System.out.println("Error " + e.getMessage());
@@ -353,4 +369,10 @@ public class HomeFragment extends Fragment {
     public String getTime(ArrayList<GeoPoint> points){
         return points.get(0).getTime();
     }
+
+    public String getDateTime(ArrayList<GeoPoint> points) throws ParseException {
+        String dateTime = formatTimeDate(points.get(0).getTime(), points.get(0).getDate());
+        return dateTime;
+    }
+
 }
