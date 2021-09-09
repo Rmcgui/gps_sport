@@ -25,9 +25,12 @@ import java.util.ArrayList;
 public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.ListViewHolder> {
 
   //  WorkoutListData[numberOfItems++] = newItem;
-    // initlialise empty Data array
+//    // initlialise empty Data array
+//    WorkoutsFragment fragment = new WorkoutsFragment();
 
-    ArrayList<TrainingSessions> sessions = WorkoutsFragment.getObjects();
+    ArrayList<TrainingSessions> sessions;
+
+
     Context mcontext;
     // pass array list of our data
     public WorkoutListAdapter(ArrayList<TrainingSessions> list ){
@@ -42,6 +45,7 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
                 .inflate(R.layout.workout_task, parent, false);
         ListViewHolder vh = new ListViewHolder(v);
         return vh;
+
     }
 
 
@@ -61,7 +65,7 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
                 new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        ((OnViewWorkout) context).viewWorkout(position);
+   //                     ((OnViewWorkout) context).viewWorkout(position);
                     }
                 }
         );

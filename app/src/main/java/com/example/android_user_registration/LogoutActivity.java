@@ -49,8 +49,12 @@ public class LogoutActivity extends AppCompatActivity {
                         dialog.cancel();
                         // don't forget to change the line below with the names of your Activities
                         Intent intent = new Intent(LogoutActivity.this, LoginActivity.class);
+                        Intent i = new Intent(LogoutActivity.this, MainActivityLogin.class);
+                        startActivity(i);
+                        finish();
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+
                     }
                 });
         AlertDialog ok = builder.create();

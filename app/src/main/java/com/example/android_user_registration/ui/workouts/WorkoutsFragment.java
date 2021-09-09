@@ -3,11 +3,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,14 +30,13 @@ public class WorkoutsFragment extends Fragment {
     // aligning items in list
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-    static ArrayList<TrainingSessions> sessions = new ArrayList<>();
-    WorkoutListAdapter adapter;
-    private MainActivityLogin MainActivity;
+    public ArrayList<TrainingSessions> sessions = new ArrayList<>();
+    public WorkoutListAdapter adapter = new WorkoutListAdapter(sessions);
 
 //    @Override
 //    public void onCreate(Bundle savedInstanceState){
 //        super.onCreate(savedInstanceState);
-//        sessions = getObjects();
+
 //        adapter = new WorkoutListAdapter(sessions);
 //    }
 
@@ -47,13 +44,12 @@ public class WorkoutsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_workouts, container, false);
-
-        //sessions = getObjects();
+        sessions = getObjects();
         //mRecyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
         recyclerView = v.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
-        recyclerView.setAdapter(new WorkoutListAdapter(sessions));
+        recyclerView.setAdapter(adapter);
 //        adapter = new WorkoutListAdapter(sessions);
 //        mRecyclerView.setAdapter(adapter);
 //        mLayoutManager = new LinearLayoutManager(getActivity());
@@ -70,7 +66,7 @@ public class WorkoutsFragment extends Fragment {
 //        fragmentTransaction.commit();
 
     //  retrieve all workout entries from Database
-    public static ArrayList getObjects(){
+    public ArrayList getObjects(){
         // query object
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TrainingSessions");
         // set constraint to only look up the current user
@@ -86,6 +82,7 @@ public class WorkoutsFragment extends Fragment {
                                 objects.get(i).get("distance").toString(), objects.get(i).get("duration").toString(), objects.get(i).get("avgSpeed").toString(),
                                 objects.get(i).get("avgPace").toString(), objects.get(i).get("calsBurned").toString()
                         ));
+                        adapter.notifyDataSetChanged();
                         System.out.println("Distance: " +  objects.get(i).get("distance").toString());
                         System.out.println("Duration: " +  objects.get(i).get("duration").toString());
                         System.out.println("avgPace: " +  objects.get(i).get("avgPace").toString());
@@ -95,8 +92,10 @@ public class WorkoutsFragment extends Fragment {
                 }
             }
         });
-
-    return sessions;
+        return sessions;
     }
 
+    public ArrayList<TrainingSessions> getData(){
+        return this.sessions;
+    }
 }
