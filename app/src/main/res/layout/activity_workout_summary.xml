@@ -76,8 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/LinearLayout_PlayersImage"
             android:layout_marginTop="5dp"
-            android:layout_weight="4"
-            android:background="@color/black"
+            android:layout_weight="5"
             android:orientation="vertical"
             android:weightSum="9">
 
@@ -219,7 +218,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="32"
                     android:gravity="center"
-                    android:text="Max Speed"
+                    android:text="Avg. Pace"
                     android:textAlignment="center"
                     android:textSize="13sp" />
 
@@ -264,71 +263,6 @@
                     android:textAlignment="center"
                     android:textSize="13dp"
                     android:textStyle="bold" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/LinearLayout_HighestStats"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#ffffff"
-                android:orientation="horizontal"
-                android:weightSum="100">
-
-                <TextView
-                    android:id="@+id/sprint1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="32"
-                    android:gravity="center"
-                    android:text="Sprint Speed"
-                    android:textAlignment="center"
-                    android:textSize="13sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/LinearLayout_100sStats"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#ffffff"
-                android:orientation="horizontal"
-                android:weightSum="100">
-
-                <TextView
-                    android:id="@+id/sta1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="32"
-                    android:gravity="center"
-                    android:text="Stamina"
-                    android:textAlignment="center"
-                    android:textSize="13sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/LinearLayout_50sStats"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#ffffff"
-                android:orientation="horizontal"
-                android:weightSum="100">
-
-                <TextView
-                    android:id="@+id/stren1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="32"
-                    android:gravity="center"
-                    android:text="Strength"
-                    android:textAlignment="center"
-                    android:textSize="13sp" />
-
             </LinearLayout>
         </LinearLayout>
 

@@ -49,13 +49,6 @@ public class HomeFragment extends Fragment {
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        homeViewModel =
-//                new ViewModelProvider(this).get(HomeViewModel.class);
-//
-//        binding = FragmentHomeBinding.inflate(inflater, container, false);
-//        View root = binding.getRoot();
-        // floating action button for prompting user for file from internal storage
-        //FloatingActionButton FAB = fragment_home.findViewById(R.id.fab);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Assign FAB
@@ -177,7 +170,7 @@ public class HomeFragment extends Fragment {
             SimpleDateFormat formattedTime = new SimpleDateFormat("HH:mm:ss");
             SimpleDateFormat formattedDate = new SimpleDateFormat("dd/MM/yy");
 
-            return timeDate = formattedDate.format(_time) + formattedTime.format(_date);
+            return timeDate = formattedDate.format(_time) + " " + formattedTime.format(_date);
     }
 
 
@@ -259,13 +252,15 @@ public class HomeFragment extends Fragment {
     // Method for uploading data to back4app server
     public void uploadData(Double distance, Double duration) throws ParseException {
         ParseObject workout = new ParseObject("TrainingSessions");
-        double avgSpeed = distance/duration;
+
+
+        double avgSpeed = distance/duration*60*60; // Km/hr
         duration = duration / 1000; // duration in seconds
         // store data in DB
         workout.put("userId", ParseUser.getCurrentUser().getObjectId()); //user id
-        workout.put("distance", distance.toString());       //distance
+        workout.put("distance", distance.toString().substring(0, distance.toString().length()-13));       //distance
         workout.put("duration", duration.toString());       //duration
-        workout.put("avgSpeed", Double.toString(avgSpeed)); //average speed
+        workout.put("avgSpeed", Double.toString(avgSpeed).substring(0, distance.toString().length()-13)); //average speed
         workout.put("time", getTime(points));               //time
         workout.put("date", points.get(0).getDate());       //date
         workout.put("dateTime", getDateTime(points));       // date and time formatted
@@ -275,63 +270,11 @@ public class HomeFragment extends Fragment {
             if (e == null) {
                 //Data saved
                 System.out.println("Data saved to database successfully");
-                try {
-                    System.out.println("dateTime:" + getDateTime(points));
-                } catch (ParseException parseException) {
-                    parseException.printStackTrace();
-                }
             } else {
                 //Display what went wrong
                 System.out.println("Error " + e.getMessage());
             }
         });
-    }
-
-    private void showDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("File Uploaded Successfully!").setCancelable(false);
-        builder.setPositiveButton("View workouts", null);
-        builder.setNegativeButton("Cancel", null);
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.setCanceledOnTouchOutside(false);
-
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button button_positive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                Button button_negative = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-
-
-                button_negative.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                button_positive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Create new fragment and transaction
-                        Fragment newFragment = new WorkoutsFragment();
-                        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-
-                        // Replace whatever is in the home_fragment view with this fragment,
-                        // and add the transaction to the back stack
-                        transaction.replace(((ViewGroup)getView().getParent()).getId(), newFragment);
-                        transaction.addToBackStack(null);
-
-                        // Commit the transaction
-                        transaction.commit();
-                        alertDialog.dismiss();}
-                });
-
-            }
-        });
-        alertDialog.show();
-
-
     }
 
     private void showProgress(){

@@ -43,10 +43,10 @@ public class WorkoutSummary extends AppCompatActivity {
             public void done(ParseObject player, ParseException e) {
                 if (e == null) {
                     nameTextView.setText(ParseUser.getCurrentUser().getUsername());
-                    durationTextView.setText(player.getString("duration"));
+                    durationTextView.setText(player.getString("duration") + "  Seconds");
                     timeTextView.setText(player.getString("dateTime"));
-                    distanceTextView.setText(player.getString("distance"));
-                    avgSpeedTextView.setText(player.getString("avgSpeed"));
+                    distanceTextView.setText(player.getString("distance") + "  Km");
+                    avgSpeedTextView.setText(player.getString("avgSpeed" )+ "  Km/h");
 
                 } else {
                     // something went wrong

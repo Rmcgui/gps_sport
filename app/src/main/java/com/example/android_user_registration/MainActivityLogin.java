@@ -1,7 +1,8 @@
 // Name: Ryan McGuire
 // Class that handles main activity UI interactions
 package com.example.android_user_registration;
-
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.Menu;
 
 import com.example.android_user_registration.interfaces.OnViewWorkout;
+import com.example.android_user_registration.ui.workouts.TrainingSessions;
+import com.example.android_user_registration.ui.workouts.WorkoutsFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -22,11 +25,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android_user_registration.databinding.ActivityMainLoginBinding;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivityLogin extends AppCompatActivity implements OnViewWorkout {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainLoginBinding binding;
+    public ArrayList<TrainingSessions> sessions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +46,15 @@ public class MainActivityLogin extends AppCompatActivity implements OnViewWorkou
 
         binding = ActivityMainLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Retrieve user data from DB
+       // getObjects();
+//        WorkoutsFragment fragment = new WorkoutsFragment();
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.add(R.id.recyclerView, fragment);
+//        fragmentTransaction.commit();
+
 
         // Configure drawer
         setSupportActionBar(binding.appBarMainActivityLogin.toolbar);
@@ -107,5 +128,31 @@ public class MainActivityLogin extends AppCompatActivity implements OnViewWorkou
         // workout clicked on
         startActivity(new Intent (this, WorkoutSummary.class).putExtra(WorkoutSummary.EXTRA_WORKOUTID, id));
     }
+
+    public void getObjects(){
+        // query object
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("TrainingSessions");
+        // set constraint to only look up the current user
+        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null){
+                    // loop through objects retrieved from database
+                    for(int i = 0; i < objects.size(); i++){
+                        // add them to Training Sessions Object Array List
+                        sessions.add(new TrainingSessions(objects.get(i).get("userId").toString(),objects.get(i).get("dateTime").toString(),
+                                objects.get(i).get("distance").toString(), objects.get(i).get("duration").toString(), objects.get(i).get("avgSpeed").toString(),
+                                objects.get(i).get("avgPace").toString(), objects.get(i).get("calsBurned").toString()
+                        ));
+
+                    }
+
+                }
+            }
+        });
+    }
+
+
 
 }
