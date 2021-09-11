@@ -2,10 +2,10 @@ package com.example.android_user_registration.ui.workouts;
 
 // MODEL
 // use this class to interact with database
-// create instance of database for reading
 public class TrainingSessions {
 
     private String mUserId;
+    private String mObjectId;
     private String mDateTime;
     private String mDistance;
     private String mDuration;
@@ -17,8 +17,9 @@ public class TrainingSessions {
 
     }
 
-    public TrainingSessions(String userId, String dateTime, String distance,
-                            String duration, String avgSpeed,String avgPace,String calsBurned){
+    public TrainingSessions(String userId, String dateTime, String distance, String duration,
+                            String avgSpeed,String avgPace,String calsBurned, String objectId )
+    {
         mUserId = userId;
         mDateTime = dateTime;
         mDistance = distance;
@@ -26,6 +27,7 @@ public class TrainingSessions {
         mAvgSpeed = avgSpeed;
         mAvgPace = avgPace;
         mCalsBurned = calsBurned;
+        mObjectId = objectId;
     }
 
 
@@ -35,10 +37,14 @@ public class TrainingSessions {
     public String getDateTime(){
         return mDateTime;
     }
-
     public String getDistance(){
         return mDistance;
     }
+
+    public String getObjectId(){
+        return mObjectId;
+    }
+
 
     public String getDuration(){
         return mDuration;

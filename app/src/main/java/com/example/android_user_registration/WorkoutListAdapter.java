@@ -1,24 +1,23 @@
 package com.example.android_user_registration;
 
+import static android.app.PendingIntent.getActivity;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android_user_registration.interfaces.OnViewWorkout;
+import com.example.android_user_registration.interfaces.OnItemClickListener;
 import com.example.android_user_registration.ui.workouts.TrainingSessions;
-import com.example.android_user_registration.ui.workouts.WorkoutsFragment;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -27,14 +26,21 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
   //  WorkoutListData[numberOfItems++] = newItem;
 //    // initlialise empty Data array
 //    WorkoutsFragment fragment = new WorkoutsFragment();
-
-    ArrayList<TrainingSessions> sessions;
-
-
-    Context mcontext;
+    Context context;
+    private ArrayList<TrainingSessions> sessions;
+    private OnItemClickListener clickListener;
+    View.OnClickListener listener;
     // pass array list of our data
-    public WorkoutListAdapter(ArrayList<TrainingSessions> list ){
+    public String workoutId;
+
+    public WorkoutListAdapter(ArrayList<TrainingSessions> list, OnItemClickListener listener){
+        //this.context = context;
         this.sessions = list;
+        this.clickListener = listener;
+    }
+
+    public WorkoutListAdapter() {
+
     }
 
     // METHOD OK
@@ -44,20 +50,19 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.workout_task, parent, false);
         ListViewHolder vh = new ListViewHolder(v);
+//        v.setOnClickListener(listener);
         return vh;
-
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder viewHolder, @SuppressLint("RecyclerView") final int position) {
- //       ((ListViewHolder) viewHolder).bindView(position);
-        TrainingSessions currentItem = sessions.get(position);
+        ((ListViewHolder) viewHolder).bindView(position);
 
-        viewHolder.getDateView().setText(currentItem.getDateTime());
-        viewHolder.getDistanceView().setText(currentItem.getDistance());
 
- //       final Context context = viewHolder.dateView.getContext();
+
+//        viewHolder.getDateView().setText(currentItem.getDateTime());
+//        viewHolder.getDistanceView().setText(currentItem.getDistance());
         // set the click action
         // when workout is selected by user.
         // TODO: Load unique workout based on userId and workoutID
@@ -65,7 +70,10 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
                 new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-   //                     ((OnViewWorkout) context).viewWorkout(position);
+                        // get the workoutId
+                        workoutId = sessions.get(position).getObjectId();
+                        // Send to Fragment.
+                        clickListener.OnItemClick(workoutId);
                     }
                 }
         );
@@ -79,14 +87,19 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
 
 
 
-    public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    // BEGIN OTHER CLASS
+    // For recycler view cards.
+    public class ListViewHolder extends RecyclerView.ViewHolder {
         private  TextView dateView;
         private  TextView distanceView;
+        // instance of interface
 
-        public ListViewHolder(View itemView) {
+
+        public ListViewHolder(final View itemView) {
             super(itemView);
             dateView = (TextView)itemView.findViewById(R.id.text1);
             distanceView = (TextView)itemView.findViewById(R.id.text2);
+            //itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
@@ -103,12 +116,13 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
         }
 
 
-        @Override
-        public void onClick(View v) {
-
-        }
+//        @Override
+//        public void onClick(View v) {
+//            clickListener.OnItemClick(workoutId);
+//        }
     }
 }
+
 //
 //    // initlialise Data array
 //    //String [] WorkoutListData = new String[]{};

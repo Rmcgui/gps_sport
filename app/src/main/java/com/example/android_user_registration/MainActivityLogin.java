@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
-import com.example.android_user_registration.interfaces.OnViewWorkout;
+import com.example.android_user_registration.interfaces.OnItemClickListener;
 import com.example.android_user_registration.ui.workouts.TrainingSessions;
 import com.example.android_user_registration.ui.workouts.WorkoutsFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,7 +34,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivityLogin extends AppCompatActivity implements OnViewWorkout {
+public class MainActivityLogin extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainLoginBinding binding;
@@ -46,15 +46,6 @@ public class MainActivityLogin extends AppCompatActivity implements OnViewWorkou
 
         binding = ActivityMainLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        // Retrieve user data from DB
-       // getObjects();
-//        WorkoutsFragment fragment = new WorkoutsFragment();
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(R.id.recyclerView, fragment);
-//        fragmentTransaction.commit();
-
 
         // Configure drawer
         setSupportActionBar(binding.appBarMainActivityLogin.toolbar);
@@ -121,38 +112,4 @@ public class MainActivityLogin extends AppCompatActivity implements OnViewWorkou
         AlertDialog ok = builder.create();
         ok.show();
     }
-
-    @Override
-    public void viewWorkout(long id) {
-        // start activity with id of
-        // workout clicked on
-        startActivity(new Intent (this, WorkoutSummary.class).putExtra(WorkoutSummary.EXTRA_WORKOUTID, id));
-    }
-
-    public void getObjects(){
-        // query object
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("TrainingSessions");
-        // set constraint to only look up the current user
-        query.whereEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                if (e == null){
-                    // loop through objects retrieved from database
-                    for(int i = 0; i < objects.size(); i++){
-                        // add them to Training Sessions Object Array List
-                        sessions.add(new TrainingSessions(objects.get(i).get("userId").toString(),objects.get(i).get("dateTime").toString(),
-                                objects.get(i).get("distance").toString(), objects.get(i).get("duration").toString(), objects.get(i).get("avgSpeed").toString(),
-                                objects.get(i).get("avgPace").toString(), objects.get(i).get("calsBurned").toString()
-                        ));
-
-                    }
-
-                }
-            }
-        });
-    }
-
-
-
 }

@@ -65,6 +65,8 @@ public class SignUpActivity extends AppCompatActivity {
     // Sign users up to parse
     private void signUp(String username, String password, String weight) {
         progressDialog.show();
+
+        // Create Parse Objects
         ParseUser user = new ParseUser();
         ParseObject userWeight = new ParseObject("UserWeight");
         // Set the user's username and password
