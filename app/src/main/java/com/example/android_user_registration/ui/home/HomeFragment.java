@@ -1,19 +1,21 @@
 package com.example.android_user_registration.ui.home;
-import java.text.DateFormat;
-import android.Manifest;
+// Ryan McGuire
+// Class that handles the home fragment.
+// Opens a file from internal storage
+// Processes the file, extracts data
+// Performs calculations on the data
+//
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
+
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -38,18 +40,16 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class HomeFragment extends Fragment {
 
     private static final int HOMEFRAGMENT_RESULT_CODE = 1;
-    private static final int RESULT_OK = 1;
     private FloatingActionButton FAB;
     // Empty data point object arraylist
     ArrayList<GeoPoint> points = new ArrayList<>();
+
     private double weight;
     private String _weight = "";
     private double metScore = 0;
@@ -57,10 +57,7 @@ public class HomeFragment extends Fragment {
     private double avgPace = 0;
     private double distance = 0;
     private String caloriesBurned = "";
-    private String mduration;
-    private String mdistance;
-
-    public String timeDate;
+    private String timeDate;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -87,6 +84,7 @@ public class HomeFragment extends Fragment {
         });
 
         // what happens when the button is clicked??
+        // file access
         FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,13 +93,14 @@ public class HomeFragment extends Fragment {
                 chooseFile.setType("*/*");
                 chooseFile = Intent.createChooser(chooseFile, "Choose a file");
                 startActivityForResult(chooseFile, HOMEFRAGMENT_RESULT_CODE);
+                // file path here does not return a valid
+                // file path that our fileprocessor can find
+                // Therefore, filepath is hardcoded into processFile();
                 String yourFilePath = getContext().getFilesDir() + "/" + "Data.txt";
                 System.out.println(yourFilePath);
             }
         });
-
         return view;
-        //return root;
     }
 
     @Override
@@ -109,14 +108,10 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         //Check condition
-
         if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)){
             //When permission granted, call file picker method
             //filePicker();
@@ -312,8 +307,6 @@ public class HomeFragment extends Fragment {
     public void uploadData(Double distance, Double duration, String calsBurned, String timeDate, Double speed, Double pace) throws ParseException {
         ParseObject workout = new ParseObject("TrainingSessions");
         duration = duration / 60; //minutes
-   //     speed = speed/1000; // km/h
-        mduration = duration.toString();
         //String avgSpeed = Double.toString(duration*60*60); // Km/hr
         String avgPace = Double.toString(duration/distance); // mins/mile
        // duration = duration / 1000; // duration in seconds
@@ -373,7 +366,6 @@ public class HomeFragment extends Fragment {
     public String getTime(ArrayList<GeoPoint> points){
         return points.get(0).getTime();
     }
-
 
     public String getDateTime(ArrayList<GeoPoint> points) throws ParseException {
         String dateTime = formatTimeDate(points.get(0).getTime(), points.get(0).getDate());

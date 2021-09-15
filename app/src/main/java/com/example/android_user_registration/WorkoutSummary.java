@@ -1,4 +1,9 @@
 package com.example.android_user_registration;
+// Ryan McGuire
+// When an item in the adapter is clicked
+// object ID passed to this activity
+// and appropriate workout is displayed, based
+// on the object ID
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +25,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
-// This class needs to implement the onclick interface
-// When an item in the adapter is clicked
-// pass the object Id to this activity.
 public class WorkoutSummary extends AppCompatActivity implements OnItemClickListener{
-
 
     public static String WORKOUT_ID = ""; // unique workout to display
 
@@ -76,11 +77,9 @@ public class WorkoutSummary extends AppCompatActivity implements OnItemClickList
         });
 
     }
-
     @Override
     public void OnItemClick(String workoutId) {
         this.WORKOUT_ID = workoutId;
     }
-
 }
 

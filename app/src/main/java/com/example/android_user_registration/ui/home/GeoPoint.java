@@ -1,10 +1,7 @@
 package com.example.android_user_registration.ui.home;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-// Class that creates GEO point objects and holds its data
+// Ryan McGuire
+// Class that creates GEO point objects and holds
+// data relating to each coordinate
 
 public class GeoPoint {
 
@@ -13,15 +10,9 @@ public class GeoPoint {
     public String Time = "";
     public String Date = "";
     public double Distance = 0.0;
-
     public float lat = 0.0f;
     public float lon = 0.0f;
 
-
-    // default constructor
-    public GeoPoint() {
-
-    }
 
     public GeoPoint(String lat, String lon, String time, String date) {
         this.Lat = lat;

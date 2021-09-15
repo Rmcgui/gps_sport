@@ -1,8 +1,6 @@
 package com.example.android_user_registration.interfaces;
-
-import com.example.android_user_registration.ui.workouts.TrainingSessions;
-
-import java.util.ArrayList;
+// nAME: rYAN mCgUIRE
+// Interface Class for passing data from activity to fragment
 
 public interface OnItemClickListener {
 

@@ -1,5 +1,5 @@
 package com.example.android_user_registration.ui.workouts;
-
+// Ryan McGuire
 // MODEL
 // use this class to interact with database
 public class TrainingSessions {

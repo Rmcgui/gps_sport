@@ -32,9 +32,9 @@ public class WorkoutsFragment extends Fragment {
     //Workouts data
     public ArrayList<TrainingSessions> sessions = new ArrayList<>();
 
-    OnItemClickListener onItemClickListener;
-
     // When a workout is clicked
+    // start new activity
+    // display chosen workout details
     private OnItemClickListener listener = new OnItemClickListener() {
         @Override
         public void OnItemClick(String objectId) {
@@ -58,7 +58,6 @@ public class WorkoutsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
         recyclerView.setAdapter(adapter);
         container.removeAllViews();
-        // create recycler view for workouts
         return v;
     }
 
