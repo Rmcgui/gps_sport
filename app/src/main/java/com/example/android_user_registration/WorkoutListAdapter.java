@@ -26,7 +26,6 @@ public class WorkoutListAdapter extends RecyclerView.Adapter<WorkoutListAdapter.
   //  WorkoutListData[numberOfItems++] = newItem;
 //    // initlialise empty Data array
 //    WorkoutsFragment fragment = new WorkoutsFragment();
-    Context context;
     private ArrayList<TrainingSessions> sessions;
     private OnItemClickListener clickListener;
     View.OnClickListener listener;

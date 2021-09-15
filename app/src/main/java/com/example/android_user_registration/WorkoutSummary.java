@@ -30,8 +30,6 @@ public class WorkoutSummary extends AppCompatActivity implements OnItemClickList
 
     // Query DB for data to display
     ParseQuery query = ParseQuery.getQuery("TrainingSessions");
-    public ArrayList<TrainingSessions> sessions = new ArrayList<>();
-
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -52,6 +50,8 @@ public class WorkoutSummary extends AppCompatActivity implements OnItemClickList
         TextView distanceTextView = findViewById(R.id.totalDistance);
         TextView durationTextView = findViewById(R.id.duration);
         TextView avgSpeedTextView = findViewById(R.id.avgSpeed);
+        TextView avgPaceTextView = findViewById(R.id.avgPace);
+        TextView calsBurnedTextView = findViewById(R.id.caloriesBurned);
 
         // start reading data from DB
         // set constraints to user ID
@@ -62,11 +62,12 @@ public class WorkoutSummary extends AppCompatActivity implements OnItemClickList
             public void done(ParseObject player, ParseException e) {
                 if (e == null) {
                     nameTextView.setText(ParseUser.getCurrentUser().getUsername());
-                    durationTextView.setText(player.getString("duration") + "  Seconds");
+                    durationTextView.setText(player.getString("duration") + "  Minutes");
                     timeTextView.setText(player.getString("dateTime"));
                     distanceTextView.setText(player.getString("distance") + "  Km");
                     avgSpeedTextView.setText(player.getString("avgSpeed" )+ "  Km/h");
-
+                    avgPaceTextView.setText(player.getString("avgPace" )+ " Mins/Km");
+                    calsBurnedTextView.setText(player.getString("calsBurned") + " Kcals");
                 } else {
                     // something went wrong
                     System.out.println("Error " + e.getMessage());

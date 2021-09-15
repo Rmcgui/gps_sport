@@ -1,19 +1,12 @@
 // Name: Ryan McGuire
 // Class that handles main activity UI interactions
 package com.example.android_user_registration;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
 
-import com.example.android_user_registration.interfaces.OnItemClickListener;
-import com.example.android_user_registration.ui.workouts.TrainingSessions;
-import com.example.android_user_registration.ui.workouts.WorkoutsFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -25,20 +18,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.android_user_registration.databinding.ActivityMainLoginBinding;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivityLogin extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainLoginBinding binding;
-    public ArrayList<TrainingSessions> sessions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

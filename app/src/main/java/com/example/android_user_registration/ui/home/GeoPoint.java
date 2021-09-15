@@ -108,25 +108,7 @@ public class GeoPoint {
                 Math.cos(prev_lat * p) * Math.cos(lat * p) *
                         (1 - Math.cos((lon - prev_lon) * p))/2;
 
-        setDistance(this.Distance);
-
         return this.Distance = 12742 * Math.asin(Math.sqrt(a)) ; // 2 * R; R = 6371 km
     }
-
-
-    // calculate the total duration of the workout in secodns
-    public static double calcDuration(String startTime, String endTime) throws ParseException {
-
-        double duration = 0; //seconds
-        // Take time format as is from GPS trace: HHmmss
-        SimpleDateFormat format = new SimpleDateFormat("HHmmss");
-        // parse to date
-        Date start = format.parse(startTime);
-        Date end = format.parse(endTime);
-        // calculate duration
-        duration = end.getTime() - start.getTime();
-        return duration;
-    }
-
 }
 

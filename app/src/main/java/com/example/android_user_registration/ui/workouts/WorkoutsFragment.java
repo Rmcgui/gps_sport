@@ -75,11 +75,12 @@ public class WorkoutsFragment extends Fragment {
                     // loop through objects retrieved from database
                     for(int i = 0; i < objects.size(); i++){
                         // add them to Training Sessions Object Array List
+                        // for application to handle
                         sessions.add(new TrainingSessions(objects.get(i).get("userId").toString(),objects.get(i).get("dateTime").toString(),
                                 objects.get(i).get("distance").toString(), objects.get(i).get("duration").toString(), objects.get(i).get("avgSpeed").toString(),
                                 objects.get(i).get("avgPace").toString(), objects.get(i).get("calsBurned").toString(), objects.get(i).getObjectId()
                         ));
-                        //a update adapter
+                        // update adapter
                         adapter.notifyDataSetChanged();
                     }
 

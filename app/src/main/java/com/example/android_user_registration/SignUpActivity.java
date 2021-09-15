@@ -76,18 +76,6 @@ public class SignUpActivity extends AppCompatActivity {
         userWeight.put("weight", weight);
         userWeight.put("username", user.getUsername());
 
-        // save to db table
-        userWeight.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if(e == null){
-                    //success
-                } else {
-                    //Error
-                }
-            }
-        });
-
         // sign user up
         user.signUpInBackground(e -> {
             progressDialog.dismiss();
@@ -101,6 +89,17 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+        // save user weight to db table
+        userWeight.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e == null){
+                    //success
+                } else {
+                    //Error
+                }
+            }
+        });
     }
 
     // Begin main activity
