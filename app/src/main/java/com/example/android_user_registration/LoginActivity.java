@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 ParseUser.logOut();
                 // Something went wrong.
-                //showAlert("LOGIN FAILED", "User Not Recognised " + username + " !");
+                showAlert("LOGIN FAILED", "User Not Recognised " + username + " !");
                 Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -88,13 +88,4 @@ public class LoginActivity extends AppCompatActivity {
         AlertDialog ok = builder.create();
         ok.show();
     }
-
-    public String getUsername(){
-        return String.valueOf(this.username);
-    }
-
-    public static ParseUser getObjectID(){
-        return getObjectID();
-    }
-
 }

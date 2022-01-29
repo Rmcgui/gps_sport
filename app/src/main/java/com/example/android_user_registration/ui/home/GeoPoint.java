@@ -1,7 +1,7 @@
 package com.example.android_user_registration.ui.home;
 // Ryan McGuire
-// Class that creates GEO point objects and holds
-// data relating to each coordinate
+// Class that creates GEO point objects from data file
+// holds data relating to each coordinate
 
 public class GeoPoint {
 

@@ -1,10 +1,9 @@
 package com.example.android_user_registration.ui.home;
-// Ryan McGuire
+// Name: Ryan McGuire
 // Class that handles the home fragment.
 // Opens a file from internal storage
 // Processes the file, extracts data
 // Performs calculations on the data
-//
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -83,7 +82,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // what happens when the button is clicked??
+        // what happens when the FAB button is clicked??
         // file access
         FAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,9 +203,6 @@ public class HomeFragment extends Fragment {
         float prev_lat = 0;
         float prev_lon = 0;
         int count = 0; //for num of lines read GPGLL
-
-//        String yourFilePath = getContext().getFilesDir() + "/" + "Data.txt";
-        //File yourFile = new File( yourFilePath );
 
         try {
             // Open file for reading
@@ -386,9 +382,5 @@ public class HomeFragment extends Fragment {
         avgPace = (duration/distance); // mins per km
         return avgPace;
     }
-
-
-
-
 
 }

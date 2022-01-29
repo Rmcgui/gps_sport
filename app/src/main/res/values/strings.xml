@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">android_user_registration</string>
 
-
+    <!-- INSERT YOUR BACK4APP SERVER DETAILS HERE -->
     <string name="back4app_server_url" translatable="false">https://parseapi.back4app.com/</string>
     <string name="back4app_app_id" translatable="false">8oho9kCeHa421FbTOzubgNLP8iDh5kXKFZxxGMQj</string>
     <string name="back4app_client_key" translatable="false">fDmMeaRrxYSGoVQywEOqIWGT1smpQEe4jGyvCKz3</string>
+
     <string name="title_activity_main_login">MainActivityLogin</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -19,14 +20,11 @@
     <string name="menu_workouts">Workouts</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_activity_view_workout">ViewWorkoutActivity</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-
 
 </resources>
